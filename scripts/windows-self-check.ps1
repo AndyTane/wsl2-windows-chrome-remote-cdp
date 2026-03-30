@@ -23,6 +23,18 @@ function Test-HttpJson {
   }
 }
 
+function To-Status {
+  param([bool]$Value)
+  if ($Value) { return "OK" }
+  return "MISS"
+}
+
+function To-Reachability {
+  param([bool]$Value)
+  if ($Value) { return "reachable" }
+  return "unreachable"
+}
+
 Write-Section "Windows self-check"
 Write-Host ("Current directory: {0}" -f (Get-Location))
 Write-Host ("ChromePath       : {0}" -f $ChromePath)
@@ -40,9 +52,9 @@ $portproxyOk = $false
 $firewallOk = $false
 $firewallRuleName = "ChromeCDP$BridgePort"
 
-if (Test-Path $ChromePath) { $chromePathOk = $true }
-if (Test-HttpJson ("http://127.0.0.1:{0}/json/version" -f $ChromePort)) { $chromeVersionOk = $true }
-if (Test-HttpJson ("http://127.0.0.1:{0}/json/list" -f $ChromePort)) { $chromeListOk = $true }
+$chromePathOk = Test-Path $ChromePath
+$chromeVersionOk = Test-HttpJson -Url ("http://127.0.0.1:{0}/json/version" -f $ChromePort)
+$chromeListOk = Test-HttpJson -Url ("http://127.0.0.1:{0}/json/list" -f $ChromePort)
 
 $portproxyText = ((& netsh interface portproxy show all) | Out-String)
 if ($portproxyText -match ("(?m)^\s*0\.0\.0\.0\s+{0}\s+127\.0\.0\.1\s+{1}\s*$" -f $BridgePort, $ChromePort)) {
@@ -63,11 +75,11 @@ if ((-not $firewallMissing) -and ($firewallText -match [regex]::Escape($firewall
 
 Write-Section "Check summary"
 $rows = @(
-  [pscustomobject]@{ Check = "Chrome executable path"; Status = $(if ($chromePathOk) { "OK" } else { "MISS" }); Detail = $ChromePath },
-  [pscustomobject]@{ Check = "Chrome local CDP /json/version"; Status = $(if ($chromeVersionOk) { "OK" } else { "MISS" }); Detail = $(if ($chromeVersionOk) { "reachable" } else { "unreachable" }) },
-  [pscustomobject]@{ Check = "Chrome local CDP /json/list"; Status = $(if ($chromeListOk) { "OK" } else { "MISS" }); Detail = $(if ($chromeListOk) { "reachable" } else { "unreachable" }) },
-  [pscustomobject]@{ Check = "portproxy bridge"; Status = $(if ($portproxyOk) { "OK" } else { "MISS" }); Detail = ("expect 0.0.0.0:{0} -> 127.0.0.1:{1}" -f $BridgePort, $ChromePort) },
-  [pscustomobject]@{ Check = "firewall rule"; Status = $(if ($firewallOk) { "OK" } else { "MISS" }); Detail = $firewallRuleName }
+  [pscustomobject]@{ Check = "Chrome executable path"; Status = (To-Status -Value $chromePathOk); Detail = $ChromePath },
+  [pscustomobject]@{ Check = "Chrome local CDP /json/version"; Status = (To-Status -Value $chromeVersionOk); Detail = (To-Reachability -Value $chromeVersionOk) },
+  [pscustomobject]@{ Check = "Chrome local CDP /json/list"; Status = (To-Status -Value $chromeListOk); Detail = (To-Reachability -Value $chromeListOk) },
+  [pscustomobject]@{ Check = "portproxy bridge"; Status = (To-Status -Value $portproxyOk); Detail = ("expect 0.0.0.0:{0} -> 127.0.0.1:{1}" -f $BridgePort, $ChromePort) },
+  [pscustomobject]@{ Check = "firewall rule"; Status = (To-Status -Value $firewallOk); Detail = $firewallRuleName }
 )
 $rows | Format-Table -AutoSize
 
