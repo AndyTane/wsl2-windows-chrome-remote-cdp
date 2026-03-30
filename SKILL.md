@@ -1,0 +1,46 @@
+---
+name: wsl2-windows-chrome-remote-cdp
+description: Diagnose, configure, and validate OpenClaw browser control when the Gateway runs inside WSL2 but Google Chrome runs on Windows, especially in environments with proxy software, global mode, virtual network adapters, or host/guest split networking. Use when browser control must attach through Remote CDP instead of launching a Linux browser, when WSL can reach Windows only through a forwarded host port, or when users mention portproxy, 9222/9223, virtual NICs, Clash/FClash/Mihomo, or WSL2-to-Windows Chrome automation.
+---
+
+Use this skill to make OpenClaw in WSL2 control Windows Chrome through a stable Remote CDP bridge.
+
+## Core rule
+
+Do not change OpenClaw browser config until WSL2 can successfully reach the Windows-side CDP bridge with `curl`.
+
+Working pattern:
+
+```text
+OpenClaw (WSL2) -> profile remote -> http://HOST_IP:9223 -> Windows portproxy -> 127.0.0.1:9222 -> Chrome
+```
+
+## Minimal workflow
+
+1. Read `references/runbook.md`.
+2. Verify Windows Chrome local CDP on `127.0.0.1:9222`.
+3. Verify Windows `portproxy` and firewall for `9223`.
+4. From WSL2, verify `curl http://HOST_IP:9223/json/version` and `/json/list`.
+5. Only then write OpenClaw remote profile config.
+6. Restart gateway.
+7. Validate with `openclaw browser profiles`, `status`, `tabs`, `open`, `snapshot`, `navigate`.
+
+## Read these references when needed
+
+- `references/runbook.md` — full end-to-end executable procedure with Mermaid diagrams
+- `references/config-snippets.md` — OpenClaw JSON, Windows commands, and validation snippets
+- `references/troubleshooting.md` — layered failure analysis and fast triage
+
+## Key invariants
+
+- Prefer `browser.profiles.remote.cdpUrl` for split-host WSL2/Windows setups.
+- Use `attachOnly: true` for externally managed Windows Chrome.
+- Treat Windows local `9222` and WSL-visible `9223` as separate layers.
+- Do not confuse a higher-layer action failure (for example screenshot timeout) with remote CDP transport failure.
+
+## What to avoid
+
+- Do not keep retrying Linux local browser launch when the real target is Windows Chrome.
+- Do not write unverified host IPs into OpenClaw config.
+- Do not assume proxy software that affects internet traffic automatically solves local WSL2-to-Windows TCP reachability.
+- Do not diagnose browser action failures before proving `/json/version` and `/json/list` are reachable from WSL2.
