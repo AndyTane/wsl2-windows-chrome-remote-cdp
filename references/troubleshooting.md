@@ -38,6 +38,21 @@ sudo apt update
 sudo apt install -y jq curl iproute2
 ```
 
+## If Windows-side state is unknown
+
+Start with Windows local self-check from the skill root directory:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
+```
+
+If it prints `NOT READY`, run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
+```
+
 ## If Windows `9222` works but WSL `9223` fails
 
 Problem is in portproxy, firewall, or WSL-to-host path.
@@ -46,6 +61,7 @@ Preferred recovery:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
 ```
 
 Commands:

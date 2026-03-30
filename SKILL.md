@@ -56,8 +56,15 @@ Use `update-openclaw-remote-cdp.sh --dry-run` before modifying config when the e
 
 ### Windows-side recovery
 
+- `scripts/windows-self-check.ps1` — verify Chrome path, local CDP on `127.0.0.1:9222`, `portproxy` bridge, and firewall rule; print READY / NOT READY and the recommended next step
 - `scripts/setup-windows-chrome-cdp.ps1` — start Windows Chrome with `--remote-debugging-port=9222`, verify local CDP, create `portproxy` `9223 -> 127.0.0.1:9222`, add firewall allow rule, and print verification guidance
 - `scripts/teardown-windows-chrome-cdp.ps1` — remove the Windows bridge `portproxy` and firewall rule
+
+Preferred pattern on Windows:
+1. Enter the skill root directory in Windows PowerShell.
+2. Run `powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1`.
+3. If NOT READY, run `powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1`.
+4. Then continue the WSL-side recovery flow.
 
 Use these when Windows reboot, proxy software reset, or network stack changes cause the bridge layer to disappear even though WSL-side config remains correct.
 

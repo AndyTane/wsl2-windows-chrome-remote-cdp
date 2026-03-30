@@ -218,6 +218,49 @@ sudo apt update
 sudo apt install -y jq
 ```
 
+### Windows Step W0：定位 skill 根目录（Windows PowerShell）
+
+在 Windows PowerShell 中，先确认当前目录：
+
+```powershell
+Get-Location
+```
+
+如果你还没有进入 skill 根目录，先定位它：
+
+```powershell
+Get-ChildItem -Path $HOME -Recurse -Directory -Filter wsl2-windows-chrome-remote-cdp -ErrorAction SilentlyContinue
+```
+
+进入其中一个结果后，再确认：
+
+```powershell
+Set-Location <skill-root>
+Get-Location
+Get-ChildItem
+```
+
+预期至少能看到：
+- `SKILL.md`
+- `references`
+- `scripts`
+
+### Windows Step W0.5：执行 Windows 前置自检
+
+在 **skill 根目录** 执行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
+```
+
+它会检查：
+- Chrome 路径是否存在
+- `127.0.0.1:9222/json/version` 是否可达
+- `127.0.0.1:9222/json/list` 是否可达
+- `portproxy` 是否存在
+- `firewall` 规则是否存在
+- 最终输出 `READY` 或 `NOT READY`
+
 ### Step 1：在 Windows 启动 Chrome 调试端口 9222
 
 ```powershell
@@ -263,6 +306,14 @@ powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
 - 验证 `127.0.0.1:9222/json/version`
 - 建立 `9223 -> 127.0.0.1:9222`
 - 增加 firewall 规则
+
+推荐顺序：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
+```
 
 ### Step 4：在 Windows 放行 9223 防火墙规则
 
