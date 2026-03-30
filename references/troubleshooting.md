@@ -2,7 +2,7 @@
 
 ## Fast triage order
 
-0. Run `./scripts/self-check.sh` from the skill root directory.
+0. Run `bash ./scripts/self-check.sh` from the skill root directory.
 1. Verify Windows local Chrome CDP on `127.0.0.1:9222`.
 2. Verify Windows portproxy and firewall for `9223`.
 3. Verify WSL2 can reach `http://172.17.32.1:9223/json/version`.
@@ -46,8 +46,8 @@ curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/version
 From the skill root directory, first run the recovery script in dry-run mode, then apply mode if the derived host IP/CDP URL are correct.
 
 ```bash
-./scripts/update-openclaw-remote-cdp.sh --dry-run
-./scripts/update-openclaw-remote-cdp.sh --apply --set-default
+bash ./scripts/update-openclaw-remote-cdp.sh --dry-run
+bash ./scripts/update-openclaw-remote-cdp.sh --apply --set-default
 ```
 
 Problem is in OpenClaw browser config or wrong profile usage.

@@ -180,8 +180,12 @@ scripts/
 在 **skill 根目录** 执行：
 
 ```bash
-./scripts/self-check.sh
+bash ./scripts/self-check.sh
 ```
+
+说明：
+- 文档默认使用 `bash ./scripts/...`，避免脚本执行位丢失时出现 `Permission denied`
+- 如果你已经确认脚本有执行权限，也可以直接用 `./scripts/...`
 
 它会检查：
 - 当前目录是否真的是 skill 根目录
@@ -278,14 +282,14 @@ wsl2-windows-chrome-remote-cdp/
 在这个前提下，优先使用 skill 自带脚本，而不是每次手工改 JSON：
 
 ```bash
-./scripts/update-openclaw-remote-cdp.sh --dry-run
-./scripts/update-openclaw-remote-cdp.sh --apply --set-default
+bash ./scripts/update-openclaw-remote-cdp.sh --dry-run
+bash ./scripts/update-openclaw-remote-cdp.sh --apply --set-default
 ```
 
 如果你只是想快速看当前宿主机 IP 与推导出来的 CDP URL：
 
 ```bash
-./scripts/show-openclaw-remote-cdp.sh
+bash ./scripts/show-openclaw-remote-cdp.sh
 ```
 
 说明：
