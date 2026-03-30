@@ -35,6 +35,12 @@ OpenClaw (WSL2) -> profile remote -> http://HOST_IP:9223 -> Windows portproxy ->
 
 ### WSL-side recovery
 
+Before running recovery, first enter the skill root directory and run:
+
+```bash
+./scripts/self-check.sh
+```
+
 - `scripts/update-openclaw-remote-cdp.sh` — detect current WSL host gateway IP, validate the Windows CDP bridge, backup `~/.openclaw/openclaw.json`, update `browser.profiles.remote.cdpUrl`, optionally set `browser.defaultProfile=remote`, restart the gateway, and print verification output
 - `scripts/show-openclaw-remote-cdp.sh` — print the currently detected host IP and derived CDP URL and probe `/json/version`
 

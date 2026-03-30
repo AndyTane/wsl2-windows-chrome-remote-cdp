@@ -54,6 +54,14 @@ curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/version
 curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/list
 ```
 
+## Preflight
+
+Run this first from the skill root directory:
+
+```bash
+./scripts/self-check.sh
+```
+
 ## Recovery scripts
 
 Run these **from the skill root directory**:

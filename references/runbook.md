@@ -134,6 +134,60 @@ sequenceDiagram
 
 ## 7. 可执行步骤（按顺序）
 
+### Step 0：定位 skill 根目录
+
+WSL 默认终端起点可能是：
+
+```bash
+pwd
+```
+
+很多情况下会看到类似：
+
+```text
+/mnt/c/Windows/system32
+```
+
+不要在这个目录直接运行 skill 脚本。先定位 skill：
+
+```bash
+find ~ -type d -name 'wsl2-windows-chrome-remote-cdp' 2>/dev/null
+```
+
+进入其中一个结果：
+
+```bash
+cd "$(find ~ -type d -name 'wsl2-windows-chrome-remote-cdp' 2>/dev/null | head -n 1)"
+```
+
+确认当前目录：
+
+```bash
+pwd
+ls
+```
+
+预期至少能看到：
+
+```text
+SKILL.md
+references/
+scripts/
+```
+
+### Step 0.5：执行前置自检
+
+在 **skill 根目录** 执行：
+
+```bash
+./scripts/self-check.sh
+```
+
+它会检查：
+- 当前目录是否真的是 skill 根目录
+- `ip` / `awk` / `curl` / `jq` / `openclaw` 是否可用
+- 如果缺 `jq` 等依赖，会直接打印安装命令
+
 ### Step 1：在 Windows 启动 Chrome 调试端口 9222
 
 ```powershell
@@ -213,7 +267,7 @@ curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/list
 
 ### Step 6：重启后自动恢复 remote CDP（推荐）
 
-**先进入 skill 根目录，再执行下面的脚本。**
+**前提：你已经完成 Step 0 和 Step 0.5，并且当前就在 skill 根目录。**
 
 也就是说，下面这些命令都默认假设你的当前目录是：
 

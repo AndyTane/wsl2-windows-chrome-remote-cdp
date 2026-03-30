@@ -22,8 +22,29 @@ EOF
 }
 
 need_cmd() {
-  command -v "$1" >/dev/null 2>&1 || {
-    echo "ERROR: missing command: $1" >&2
+  local cmd="$1"
+  command -v "$cmd" >/dev/null 2>&1 || {
+    echo "ERROR: missing command: $cmd" >&2
+    case "$cmd" in
+      jq)
+        echo "Install it with:" >&2
+        echo "  sudo apt update" >&2
+        echo "  sudo apt install -y jq" >&2
+        ;;
+      ip)
+        echo "Install it with:" >&2
+        echo "  sudo apt update" >&2
+        echo "  sudo apt install -y iproute2" >&2
+        ;;
+      curl)
+        echo "Install it with:" >&2
+        echo "  sudo apt update" >&2
+        echo "  sudo apt install -y curl" >&2
+        ;;
+      openclaw)
+        echo "Ensure OpenClaw CLI is installed and available in PATH." >&2
+        ;;
+    esac
     exit 1
   }
 }

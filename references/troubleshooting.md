@@ -2,6 +2,7 @@
 
 ## Fast triage order
 
+0. Run `./scripts/self-check.sh` from the skill root directory.
 1. Verify Windows local Chrome CDP on `127.0.0.1:9222`.
 2. Verify Windows portproxy and firewall for `9223`.
 3. Verify WSL2 can reach `http://172.17.32.1:9223/json/version`.
