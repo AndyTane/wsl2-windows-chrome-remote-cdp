@@ -40,7 +40,7 @@ sudo apt install -y jq curl iproute2
 
 ## If Windows-side state is unknown
 
-Note: earlier versions of the Windows self-check script became too complex and regressed from “runnable but imperfect” to `ParserError`. The current version intentionally uses a minimal, less elegant structure so that parsing stability takes priority over pretty output.
+Note: earlier versions of the Windows self-check script became too complex and regressed from “runnable but imperfect” to `ParserError`. The current version intentionally follows a much simpler structure validated against a known-good user-tested variant: straight-line checks, simple string matching, and minimal formatting. Parsing stability takes priority over pretty output.
 
 Start with Windows local self-check from the skill root directory:
 
