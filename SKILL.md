@@ -56,7 +56,7 @@ Use `update-openclaw-remote-cdp.sh --dry-run` before modifying config when the e
 
 ### Windows-side recovery
 
-- `scripts/windows-self-check.ps1` — verify Chrome path, local CDP on `127.0.0.1:9222`, `portproxy` bridge, and firewall rule; print READY / NOT READY and the recommended next step
+- `scripts/windows-self-check.ps1` — minimal Windows-side checker that verifies Chrome path, local CDP on `127.0.0.1:9222`, `portproxy` bridge, and firewall rule; prints READY / NOT READY with simple line-by-line status output
 - `scripts/setup-windows-chrome-cdp.ps1` — start Windows Chrome with `--remote-debugging-port=9222`, verify local CDP, create `portproxy` `9223 -> 127.0.0.1:9222`, add firewall allow rule, and print verification guidance
 - `scripts/teardown-windows-chrome-cdp.ps1` — remove the Windows bridge `portproxy` and firewall rule
 

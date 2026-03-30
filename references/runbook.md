@@ -291,6 +291,11 @@ powershell -NoExit -ExecutionPolicy Bypass -File .\windows-self-check.ps1
 - `firewall` 规则是否存在
 - 最终输出 `READY` 或 `NOT READY`
 
+这版脚本故意保持极简：
+- 不做复杂对象组装
+- 不做复杂格式化
+- 优先保证在 Windows PowerShell 中可解析、可执行、可读输出
+
 注意：
 - 不要依赖双击 `.ps1` 文件或从 `\\wsl$` 路径直接点开脚本来观察输出
 - 这类方式经常会出现“窗口瞬间打开又关闭”的体验，看起来像“闪退”

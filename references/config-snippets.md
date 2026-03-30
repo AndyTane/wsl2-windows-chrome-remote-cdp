@@ -28,6 +28,8 @@
 
 Recommended: copy the `.ps1` files to a local Windows folder first, then run:
 
+This Windows self-check is intentionally minimal and line-oriented for parser stability.
+
 ```powershell
 powershell -NoExit -ExecutionPolicy Bypass -File .\windows-self-check.ps1
 powershell -ExecutionPolicy Bypass -File .\setup-windows-chrome-cdp.ps1
