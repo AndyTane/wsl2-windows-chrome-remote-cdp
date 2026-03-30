@@ -329,7 +329,7 @@ netsh advfirewall firewall add rule name="ChromeCDP9223" dir=in action=allow pro
 查看：
 
 ```powershell
-netsh advfirewall firewall show rule name="ChromeCDP9223"
+netsh advfirewall firewall show rule name='ChromeCDP9223'
 ```
 
 删除：

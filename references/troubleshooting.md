@@ -40,7 +40,7 @@ sudo apt install -y jq curl iproute2
 
 ## If Windows-side state is unknown
 
-Note: older versions of the Windows self-check script could mis-detect the firewall rule on non-English Windows because they matched English-only output. Current versions check the rule name itself and explicit "no match" markers instead.
+Note: older versions of the Windows self-check script could mis-detect the firewall rule on non-English Windows or when `cmd`/quote escaping broke the `netsh advfirewall firewall show rule` call. Current versions avoid the old `cmd /c` quoting path and check the rule name itself plus explicit "no match" markers instead.
 
 Start with Windows local self-check from the skill root directory:
 
