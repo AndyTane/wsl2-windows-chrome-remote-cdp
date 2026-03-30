@@ -191,26 +191,50 @@ curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/version
 curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/list
 ```
 
-### Step 6：确认 OpenClaw 配置已指向 remote CDP
+### Step 6：重启后自动恢复 remote CDP（推荐）
+
+优先使用 skill 自带脚本，而不是每次手工改 JSON：
+
+```bash
+~/bin/update-openclaw-remote-cdp.sh --dry-run
+~/bin/update-openclaw-remote-cdp.sh --apply --set-default
+```
+
+如果你只是想快速看当前宿主机 IP 与推导出来的 CDP URL：
+
+```bash
+~/bin/show-openclaw-remote-cdp.sh
+```
+
+建议将 skill 中的脚本复制到：
+
+```bash
+mkdir -p ~/bin
+cp scripts/update-openclaw-remote-cdp.sh ~/bin/
+cp scripts/show-openclaw-remote-cdp.sh ~/bin/
+chmod +x ~/bin/update-openclaw-remote-cdp.sh ~/bin/show-openclaw-remote-cdp.sh
+```
+
+### Step 7：确认 OpenClaw 配置已指向 remote CDP
 
 ```bash
 grep -n 'defaultProfile\|cdpUrl\|attachOnly' ~/.openclaw/openclaw.json
 ```
 
-### Step 7：重启 OpenClaw Gateway
+### Step 8：重启 OpenClaw Gateway
 
 ```bash
 openclaw gateway restart
 ```
 
-### Step 8：验证 OpenClaw 已接上 remote profile
+### Step 9：验证 OpenClaw 已接上 remote profile
 
 ```bash
 openclaw browser profiles
 openclaw browser --browser-profile remote status
 ```
 
-### Step 9：验证 OpenClaw 对 Windows Chrome 的控制能力
+### Step 10：验证 OpenClaw 对 Windows Chrome 的控制能力
 
 ```bash
 openclaw browser --browser-profile remote tabs
