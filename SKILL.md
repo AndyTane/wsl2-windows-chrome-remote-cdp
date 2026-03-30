@@ -61,6 +61,33 @@ Use `update-openclaw-remote-cdp.sh --dry-run` before modifying config when the e
 
 Use these when Windows reboot, proxy software reset, or network stack changes cause the bridge layer to disappear even though WSL-side config remains correct.
 
+## Dependency remediation rule
+
+When a required dependency is missing in WSL, do not stop at printing shell commands.
+
+Preferred agent behavior:
+
+1. Explain the missing dependency in plain language.
+2. State which next step is blocked.
+3. Ask whether to install it automatically.
+4. If the user replies with an explicit confirmation such as `YES`, run the install command directly.
+5. After installation, resume the original flow automatically instead of asking the user to restart from scratch.
+
+Examples:
+
+- Missing `jq` blocks automatic OpenClaw JSON updates.
+- Missing `ip` blocks default gateway detection.
+- Missing `curl` blocks CDP endpoint validation.
+
+Preferred install commands on Ubuntu/WSL:
+
+```bash
+sudo apt update
+sudo apt install -y jq curl iproute2
+```
+
+If `sudo` requires an interactive password that the agent cannot provide, show the exact command and tell the user the next step will continue automatically after installation completes.
+
 ## Key invariants
 
 - Prefer `browser.profiles.remote.cdpUrl` for split-host WSL2/Windows setups.

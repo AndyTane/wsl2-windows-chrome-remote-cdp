@@ -192,6 +192,32 @@ bash ./scripts/self-check.sh
 - `ip` / `awk` / `curl` / `jq` / `openclaw` 是否可用
 - 如果缺 `jq` 等依赖，会直接打印安装命令
 
+### Step 0.6：缺依赖时的推荐交互（面向小白用户）
+
+如果前置检查发现缺依赖，不要只把安装命令丢给用户就结束。
+
+推荐的 Agent 交互应该是：
+
+1. 用通俗语言解释缺了什么
+2. 说明这会阻塞哪一步
+3. 问用户是否要代装
+4. 如果用户回复 `YES`，直接执行安装
+5. 安装完成后，自动继续 `self-check` 和后续恢复流程
+
+Ubuntu / WSL 常用安装命令：
+
+```bash
+sudo apt update
+sudo apt install -y jq curl iproute2
+```
+
+如果只有 `jq` 缺失，也可以更小粒度安装：
+
+```bash
+sudo apt update
+sudo apt install -y jq
+```
+
 ### Step 1：在 Windows 启动 Chrome 调试端口 9222
 
 ```powershell

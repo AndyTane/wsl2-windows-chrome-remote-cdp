@@ -62,6 +62,13 @@ Run this first from the skill root directory:
 bash ./scripts/self-check.sh
 ```
 
+If dependencies are missing and the user confirms installation, use:
+
+```bash
+sudo apt update
+sudo apt install -y jq curl iproute2
+```
+
 ## Recovery scripts
 
 Run these **from the skill root directory**:
