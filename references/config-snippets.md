@@ -27,7 +27,7 @@
 ## Windows recovery script
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
+powershell -NoExit -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
 powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
 powershell -ExecutionPolicy Bypass -File .\scripts\teardown-windows-chrome-cdp.ps1
 ```

@@ -247,10 +247,10 @@ Get-ChildItem
 
 ### Windows Step W0.5：执行 Windows 前置自检
 
-在 **skill 根目录** 执行：
+在 **已有的 Windows PowerShell 控制台**、并且位于 **skill 根目录** 时执行：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
+powershell -NoExit -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
 ```
 
 它会检查：
@@ -260,6 +260,11 @@ powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
 - `portproxy` 是否存在
 - `firewall` 规则是否存在
 - 最终输出 `READY` 或 `NOT READY`
+
+注意：
+- 不要依赖双击 `.ps1` 文件或从 `\\wsl$` 路径直接点开脚本来观察输出
+- 这类方式经常会出现“窗口瞬间打开又关闭”的体验，看起来像“闪退”
+- 应在一个已经打开的 Windows PowerShell 控制台里执行，并加 `-NoExit` 保持窗口不自动关闭
 
 ### Step 1：在 Windows 启动 Chrome 调试端口 9222
 
