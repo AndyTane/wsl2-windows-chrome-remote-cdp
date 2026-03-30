@@ -226,16 +226,36 @@ sudo apt install -y jq
 Get-Location
 ```
 
-如果你还没有进入 skill 根目录，先定位它：
+注意：如果 skill 实际放在 WSL Linux 文件系统里，直接用下面这条命令在 Windows 用户目录下递归搜索，**通常找不到**：
 
 ```powershell
 Get-ChildItem -Path $HOME -Recurse -Directory -Filter wsl2-windows-chrome-remote-cdp -ErrorAction SilentlyContinue
 ```
 
-进入其中一个结果后，再确认：
+因为它只会搜 Windows 用户目录，不会自动枚举 `\\wsl$\...` 下的 Linux 文件系统。
+
+更稳的做法：
+
+#### 方式 A：先在 WSL 里输出 skill 路径，再切到对应的 `\\wsl$` 路径
+
+在 WSL 中执行：
+
+```bash
+pwd
+find ~ -type d -name 'wsl2-windows-chrome-remote-cdp' 2>/dev/null | head -n 1
+```
+
+然后在 Windows PowerShell 中手动进入类似这样的路径：
 
 ```powershell
-Set-Location <skill-root>
+Set-Location "\\wsl$\Ubuntu-24.04\home\<linux-user>\.openclaw\workspace\skills\wsl2-windows-chrome-remote-cdp"
+```
+
+#### 方式 B：如果你已经在 `\\wsl$` 里打开了 skill 目录，直接继续
+
+进入 skill 根目录后，再确认：
+
+```powershell
 Get-Location
 Get-ChildItem
 ```

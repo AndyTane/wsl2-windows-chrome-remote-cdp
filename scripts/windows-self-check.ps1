@@ -46,11 +46,12 @@ $portproxyText = ($portproxyOut | Out-String)
 $portproxyOk = ($portproxyText -match "(?m)^\s*0\.0\.0\.0\s+$BridgePort\s+127\.0\.0\.1\s+$ChromePort\s*$") -or ($portproxyText -match "(?m)^\s*\*\s+$BridgePort\s+127\.0\.0\.1\s+$ChromePort\s*$")
 $results += [pscustomobject]@{ Check = 'portproxy bridge'; Status = $(if ($portproxyOk) { 'OK' } else { 'MISS' }); Detail = "expect 0.0.0.0:$BridgePort -> 127.0.0.1:$ChromePort" }
 
-$firewallOut = & netsh advfirewall firewall show rule name="ChromeCDP$BridgePort" 2>&1
+$firewallRuleName = "ChromeCDP$BridgePort"
+$firewallOut = & netsh advfirewall firewall show rule name=$firewallRuleName 2>&1
 $firewallText = ($firewallOut | Out-String)
-$firewallMissing = ($firewallText -match 'No rules match') -or ($firewallText -match '没有与指定条件匹配的规则') -or ($firewallText -match '指定的值无效')
-$firewallOk = (-not $firewallMissing) -and ($firewallText -match [regex]::Escape("ChromeCDP$BridgePort"))
-$results += [pscustomobject]@{ Check = 'firewall rule'; Status = $(if ($firewallOk) { 'OK' } else { 'MISS' }); Detail = "ChromeCDP$BridgePort" }
+$firewallMissing = ($firewallText -match "No rules match") -or ($firewallText -match "没有与指定条件匹配的规则") -or ($firewallText -match "指定的值无效")
+$firewallOk = (-not $firewallMissing) -and ($firewallText -match [regex]::Escape($firewallRuleName))
+$results += [pscustomobject]@{ Check = 'firewall rule'; Status = $(if ($firewallOk) { 'OK' } else { 'MISS' }); Detail = $firewallRuleName }
 
 $ready = $chromePathOk -and $chromeJson.ok -and $chromeList.ok -and $portproxyOk -and $firewallOk
 
@@ -72,7 +73,7 @@ Write-Host "  Get-Location"
 Write-Host "  curl http://127.0.0.1:$ChromePort/json/version"
 Write-Host "  curl http://127.0.0.1:$ChromePort/json/list"
 Write-Host "  netsh interface portproxy show all"
-Write-Host "  netsh advfirewall firewall show rule name='ChromeCDP$BridgePort'"
+Write-Host ("  netsh advfirewall firewall show rule name='{0}'" -f $firewallRuleName)
 Write-Host ""
 Write-Host "If you need to keep the window open after running manually, use:"
 Write-Host "  powershell -NoExit -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1"
