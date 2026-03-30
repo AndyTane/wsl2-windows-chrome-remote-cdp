@@ -267,10 +267,20 @@ Get-ChildItem
 
 ### Windows Step W0.5：[Windows PowerShell] 执行 Windows 前置自检
 
-在 **已有的 Windows PowerShell 控制台**、并且位于 **skill 根目录** 时执行：
+优先建议：**先把 Windows 侧 `.ps1` 脚本复制到 Windows 本地目录，再执行。**
+
+原因：
+- 在部分环境里，直接从 `\\wsl$\...` 路径执行 PowerShell 脚本，可能出现解析/缓存/路径兼容性异常
+- 将脚本放到 Windows 本地目录（例如桌面或 `C:\temp\wsl2-windows-chrome-remote-cdp`）后再执行，更稳
+
+例如先把下面两个文件复制到 Windows 本地目录：
+- `windows-self-check.ps1`
+- `setup-windows-chrome-cdp.ps1`
+
+然后在 **已有的 Windows PowerShell 控制台** 中，`Set-Location` 到那个 Windows 本地目录，再执行：
 
 ```powershell
-powershell -NoExit -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
+powershell -NoExit -ExecutionPolicy Bypass -File .\windows-self-check.ps1
 ```
 
 它会检查：
@@ -332,12 +342,12 @@ powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
 - 建立 `9223 -> 127.0.0.1:9222`
 - 增加 firewall 规则
 
-推荐顺序：
+推荐顺序（在 Windows 本地目录中执行）：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
-powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
-powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
+powershell -ExecutionPolicy Bypass -File .\windows-self-check.ps1
+powershell -ExecutionPolicy Bypass -File .\setup-windows-chrome-cdp.ps1
+powershell -ExecutionPolicy Bypass -File .\windows-self-check.ps1
 ```
 
 ### Step 4：在 Windows 放行 9223 防火墙规则

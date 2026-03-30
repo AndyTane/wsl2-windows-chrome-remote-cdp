@@ -26,10 +26,12 @@
 
 ## Windows recovery script
 
+Recommended: copy the `.ps1` files to a local Windows folder first, then run:
+
 ```powershell
-powershell -NoExit -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
-powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
-powershell -ExecutionPolicy Bypass -File .\scripts\teardown-windows-chrome-cdp.ps1
+powershell -NoExit -ExecutionPolicy Bypass -File .\windows-self-check.ps1
+powershell -ExecutionPolicy Bypass -File .\setup-windows-chrome-cdp.ps1
+powershell -ExecutionPolicy Bypass -File .\teardown-windows-chrome-cdp.ps1
 ```
 
 ## Windows portproxy commands

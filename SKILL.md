@@ -62,8 +62,8 @@ Use `update-openclaw-remote-cdp.sh --dry-run` before modifying config when the e
 
 Preferred pattern on Windows:
 1. Enter the skill root directory in Windows PowerShell.
-2. Run `powershell -NoExit -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1` from an existing Windows PowerShell console.
-3. If NOT READY, run `powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1`.
+2. Copy the Windows `.ps1` files to a local Windows folder and run `powershell -NoExit -ExecutionPolicy Bypass -File .\windows-self-check.ps1` from an existing Windows PowerShell console.
+3. If NOT READY, run `powershell -ExecutionPolicy Bypass -File .\setup-windows-chrome-cdp.ps1`.
 4. Then continue the WSL-side recovery flow.
 
 Use these when Windows reboot, proxy software reset, or network stack changes cause the bridge layer to disappear even though WSL-side config remains correct.
