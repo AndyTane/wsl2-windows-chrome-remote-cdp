@@ -108,3 +108,4 @@ If `sudo` requires an interactive password that the agent cannot provide, show t
 - Do not write unverified host IPs into OpenClaw config.
 - Do not assume proxy software that affects internet traffic automatically solves local WSL2-to-Windows TCP reachability.
 - Do not diagnose browser action failures before proving `/json/version` and `/json/list` are reachable from WSL2.
+- Do not over-engineer Windows PowerShell helper scripts for end users; prefer parser stability over elegant abstractions.

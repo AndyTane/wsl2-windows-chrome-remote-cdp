@@ -42,6 +42,19 @@ sudo apt install -y jq curl iproute2
 
 Note: earlier versions of the Windows self-check script became too complex and regressed from “runnable but imperfect” to `ParserError`. The current version intentionally follows a much simpler structure validated against a known-good user-tested variant: straight-line checks, simple string matching, and minimal formatting. Parsing stability takes priority over pretty output.
 
+### Windows PowerShell scripting rules learned from this incident
+
+When writing Windows-side helper scripts for end users, especially on Windows PowerShell 5.x and localized systems:
+
+1. Prefer the smallest syntax subset that gets the job done.
+2. Prefer straight-line checks over helper-heavy abstractions.
+3. Avoid decorative status markers such as `[OK]` / `[MISS]` in output strings.
+4. Avoid complex inline expressions and nested `$(if (...) { ... })` inside output objects.
+5. Avoid complicated quote nesting and aggressive string composition.
+6. Prefer simple double-quoted strings with direct variable interpolation when they remain readable.
+7. Prefer “ugly but stable” over “elegant but parser-fragile”.
+8. If a script fails with parser errors twice in a row, stop patching incrementally and rewrite it in a more minimal style.
+
 Start with Windows local self-check from the skill root directory:
 
 ```powershell
