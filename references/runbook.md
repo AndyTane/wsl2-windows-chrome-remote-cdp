@@ -148,7 +148,9 @@ curl http://127.0.0.1:9222/json/list
 netstat -ano | findstr 9222
 ```
 
-### Step 3：在 Windows 建立 9223 → 9222 的 portproxy 转发
+### Step 3：在 Windows 建立 9223 → 9222 的 bridge（两种方式）
+
+#### 方式 A：手工执行 netsh（最直接）
 
 ```powershell
 netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=9223 connectaddress=127.0.0.1 connectport=9222
@@ -166,6 +168,18 @@ netsh interface portproxy show all
 netsh interface portproxy delete v4tov4 listenaddress=0.0.0.0 listenport=9223
 ```
 
+#### 方式 B：执行 skill 自带 PowerShell 脚本（推荐给重启后恢复）
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
+```
+
+这个脚本会自动：
+- 启动 Chrome 9222
+- 验证 `127.0.0.1:9222/json/version`
+- 建立 `9223 -> 127.0.0.1:9222`
+- 增加 firewall 规则
+
 ### Step 4：在 Windows 放行 9223 防火墙规则
 
 ```powershell
@@ -182,6 +196,12 @@ netsh advfirewall firewall show rule name="ChromeCDP9223"
 
 ```powershell
 netsh advfirewall firewall delete rule name="ChromeCDP9223"
+```
+
+如需整体回收 bridge，可执行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\teardown-windows-chrome-cdp.ps1
 ```
 
 ### Step 5：在 WSL 验证 9223 是否已打通

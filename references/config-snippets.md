@@ -24,6 +24,13 @@
 & 'C:\Program Files\Google\Chrome\Application\chrome.exe' --remote-debugging-port=9222
 ```
 
+## Windows recovery script
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\teardown-windows-chrome-cdp.ps1
+```
+
 ## Windows portproxy commands
 
 ```powershell

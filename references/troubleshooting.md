@@ -23,6 +23,12 @@ netstat -ano | findstr 9222
 
 Problem is in portproxy, firewall, or WSL-to-host path.
 
+Preferred recovery:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
+```
+
 Commands:
 
 ```powershell

@@ -33,10 +33,19 @@ OpenClaw (WSL2) -> profile remote -> http://HOST_IP:9223 -> Windows portproxy ->
 
 ## Use bundled scripts
 
+### WSL-side recovery
+
 - `scripts/update-openclaw-remote-cdp.sh` — detect current WSL host gateway IP, validate the Windows CDP bridge, backup `~/.openclaw/openclaw.json`, update `browser.profiles.remote.cdpUrl`, optionally set `browser.defaultProfile=remote`, restart the gateway, and print verification output
 - `scripts/show-openclaw-remote-cdp.sh` — print the currently detected host IP and derived CDP URL and probe `/json/version`
 
 Use `update-openclaw-remote-cdp.sh --dry-run` before modifying config when the environment may have changed after Windows or WSL reboot.
+
+### Windows-side recovery
+
+- `scripts/setup-windows-chrome-cdp.ps1` — start Windows Chrome with `--remote-debugging-port=9222`, verify local CDP, create `portproxy` `9223 -> 127.0.0.1:9222`, add firewall allow rule, and print verification guidance
+- `scripts/teardown-windows-chrome-cdp.ps1` — remove the Windows bridge `portproxy` and firewall rule
+
+Use these when Windows reboot, proxy software reset, or network stack changes cause the bridge layer to disappear even though WSL-side config remains correct.
 
 ## Key invariants
 
