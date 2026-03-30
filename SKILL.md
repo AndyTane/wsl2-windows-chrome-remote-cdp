@@ -57,8 +57,8 @@ Use `update-openclaw-remote-cdp.sh --dry-run` before modifying config when the e
 ### Windows-side recovery
 
 - `scripts/windows-self-check.ps1` — minimal Windows-side checker that verifies Chrome path, local CDP on `127.0.0.1:9222`, `portproxy` bridge, and firewall rule; prints READY / NOT READY with simple line-by-line status output
-- `scripts/setup-windows-chrome-cdp.ps1` — start Windows Chrome with `--remote-debugging-port=9222`, verify local CDP, create `portproxy` `9223 -> 127.0.0.1:9222`, add firewall allow rule, and print verification guidance
-- `scripts/teardown-windows-chrome-cdp.ps1` — remove the Windows bridge `portproxy` and firewall rule
+- `scripts/setup-windows-chrome-cdp.ps1` — minimal Windows setup script that can run with `-DryRun` first, then start Windows Chrome with `--remote-debugging-port=9222`, recreate `portproxy` `9223 -> 127.0.0.1:9222`, add firewall allow rule, and print verification guidance
+- `scripts/teardown-windows-chrome-cdp.ps1` — minimal Windows teardown script that can run with `-DryRun` first, then remove the Windows bridge `portproxy` and firewall rule
 
 Preferred pattern on Windows:
 1. Enter the skill root directory in Windows PowerShell.

@@ -351,8 +351,15 @@ powershell -ExecutionPolicy Bypass -File .\scripts\setup-windows-chrome-cdp.ps1
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\windows-self-check.ps1
+powershell -ExecutionPolicy Bypass -File .\setup-windows-chrome-cdp.ps1 -DryRun
 powershell -ExecutionPolicy Bypass -File .\setup-windows-chrome-cdp.ps1
 powershell -ExecutionPolicy Bypass -File .\windows-self-check.ps1
+```
+
+如果只想看 teardown 将执行什么，而不真正删除：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\teardown-windows-chrome-cdp.ps1 -DryRun
 ```
 
 ### Step 4：在 Windows 放行 9223 防火墙规则

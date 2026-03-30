@@ -32,7 +32,9 @@ This Windows self-check is intentionally minimal and line-oriented for parser st
 
 ```powershell
 powershell -NoExit -ExecutionPolicy Bypass -File .\windows-self-check.ps1
+powershell -ExecutionPolicy Bypass -File .\setup-windows-chrome-cdp.ps1 -DryRun
 powershell -ExecutionPolicy Bypass -File .\setup-windows-chrome-cdp.ps1
+powershell -ExecutionPolicy Bypass -File .\teardown-windows-chrome-cdp.ps1 -DryRun
 powershell -ExecutionPolicy Bypass -File .\teardown-windows-chrome-cdp.ps1
 ```
 

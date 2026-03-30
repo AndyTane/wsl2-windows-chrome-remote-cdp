@@ -57,6 +57,13 @@ When writing Windows-side helper scripts for end users, especially on Windows Po
 
 Start with Windows local self-check from the skill root directory:
 
+Before making Windows-side changes, prefer a dry run first:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\setup-windows-chrome-cdp.ps1 -DryRun
+powershell -ExecutionPolicy Bypass -File .\teardown-windows-chrome-cdp.ps1 -DryRun
+```
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\windows-self-check.ps1
 ```
