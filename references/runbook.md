@@ -134,7 +134,7 @@ sequenceDiagram
 
 ## 7. 可执行步骤（按顺序）
 
-### Step 0：定位 skill 根目录
+### Step 0：[WSL Terminal] 定位 skill 根目录
 
 WSL 默认终端起点可能是：
 
@@ -175,7 +175,7 @@ references/
 scripts/
 ```
 
-### Step 0.5：执行前置自检
+### Step 0.5：[WSL Terminal] 执行前置自检
 
 在 **skill 根目录** 执行：
 
@@ -192,7 +192,7 @@ bash ./scripts/self-check.sh
 - `ip` / `awk` / `curl` / `jq` / `openclaw` 是否可用
 - 如果缺 `jq` 等依赖，会直接打印安装命令
 
-### Step 0.6：缺依赖时的推荐交互（面向小白用户）
+### Step 0.6：[WSL Terminal] 缺依赖时的推荐交互（面向小白用户）
 
 如果前置检查发现缺依赖，不要只把安装命令丢给用户就结束。
 
@@ -218,7 +218,7 @@ sudo apt update
 sudo apt install -y jq
 ```
 
-### Windows Step W0：定位 skill 根目录（Windows PowerShell）
+### Windows Step W0：[Windows PowerShell] 定位 skill 根目录
 
 在 Windows PowerShell 中，先确认当前目录：
 
@@ -238,14 +238,14 @@ Get-ChildItem -Path $HOME -Recurse -Directory -Filter wsl2-windows-chrome-remote
 
 #### 方式 A：先在 WSL 里输出 skill 路径，再切到对应的 `\\wsl$` 路径
 
-在 WSL 中执行：
+在 **WSL Terminal** 中执行：
 
 ```bash
 pwd
 find ~ -type d -name 'wsl2-windows-chrome-remote-cdp' 2>/dev/null | head -n 1
 ```
 
-然后在 Windows PowerShell 中手动进入类似这样的路径：
+然后在 **Windows PowerShell** 中手动进入类似这样的路径：
 
 ```powershell
 Set-Location "\\wsl$\Ubuntu-24.04\home\<linux-user>\.openclaw\workspace\skills\wsl2-windows-chrome-remote-cdp"
@@ -265,7 +265,7 @@ Get-ChildItem
 - `references`
 - `scripts`
 
-### Windows Step W0.5：执行 Windows 前置自检
+### Windows Step W0.5：[Windows PowerShell] 执行 Windows 前置自检
 
 在 **已有的 Windows PowerShell 控制台**、并且位于 **skill 根目录** 时执行：
 
@@ -364,14 +364,14 @@ netsh advfirewall firewall delete rule name="ChromeCDP9223"
 powershell -ExecutionPolicy Bypass -File .\scripts\teardown-windows-chrome-cdp.ps1
 ```
 
-### Step 5：在 WSL 验证 9223 是否已打通
+### Step 5：[WSL Terminal] 验证 9223 是否已打通
 
 ```bash
 curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/version
 curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/list
 ```
 
-### Step 6：重启后自动恢复 remote CDP（推荐）
+### Step 6：[WSL Terminal] 重启后自动恢复 remote CDP（推荐）
 
 **前提：你已经完成 Step 0 和 Step 0.5，并且当前就在 skill 根目录。**
 
@@ -401,26 +401,26 @@ bash ./scripts/show-openclaw-remote-cdp.sh
 
 `~/bin` 复制方式只是一种可选的长期使用优化，不是默认步骤，也不是功能前提。
 
-### Step 7：确认 OpenClaw 配置已指向 remote CDP
+### Step 7：[WSL Terminal] 确认 OpenClaw 配置已指向 remote CDP
 
 ```bash
 grep -n 'defaultProfile\|cdpUrl\|attachOnly' ~/.openclaw/openclaw.json
 ```
 
-### Step 8：重启 OpenClaw Gateway
+### Step 8：[WSL Terminal] 重启 OpenClaw Gateway
 
 ```bash
 openclaw gateway restart
 ```
 
-### Step 9：验证 OpenClaw 已接上 remote profile
+### Step 9：[WSL Terminal] 验证 OpenClaw 已接上 remote profile
 
 ```bash
 openclaw browser profiles
 openclaw browser --browser-profile remote status
 ```
 
-### Step 10：验证 OpenClaw 对 Windows Chrome 的控制能力
+### Step 10：[WSL Terminal] 验证 OpenClaw 对 Windows Chrome 的控制能力
 
 ```bash
 openclaw browser --browser-profile remote tabs
