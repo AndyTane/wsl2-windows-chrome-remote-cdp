@@ -109,3 +109,105 @@ If `sudo` requires an interactive password that the agent cannot provide, show t
 - Do not assume proxy software that affects internet traffic automatically solves local WSL2-to-Windows TCP reachability.
 - Do not diagnose browser action failures before proving `/json/version` and `/json/list` are reachable from WSL2.
 - Do not over-engineer Windows PowerShell helper scripts for end users; prefer parser stability over elegant abstractions.
+
+## Browser interaction best practices
+
+### Ref naming convention
+
+When documenting or scripting browser interactions, use the `@eN` style for clarity:
+
+```bash
+# Preferred (clear ref style)
+openclaw browser click @e12
+openclaw browser type @e23 "username"
+
+# Also valid (raw number)
+openclaw browser click 12
+openclaw browser type 23 "username"
+```
+
+The `@eN` style makes scripts more readable and aligns with agent-browser conventions.
+
+### Snapshot workflow
+
+Recommended pattern for reliable automation:
+
+```bash
+# 1. Navigate
+openclaw browser --browser-profile remote open https://example.com
+
+# 2. Wait for network idle
+openclaw browser wait --load networkidle
+
+# 3. Capture interactive snapshot
+openclaw browser --browser-profile remote snapshot --interactive --limit 200
+
+# 4. Parse refs and interact
+openclaw browser click @e12
+openclaw browser type @e23 "text"
+
+# 5. Re-snapshot after page changes
+openclaw browser --browser-profile remote snapshot --interactive --limit 200
+```
+
+### Snapshot wrapper script
+
+Use the bundled `snapshot-json.sh` for unified JSON output:
+
+```bash
+# Default AI snapshot
+bash ./scripts/snapshot-json.sh
+
+# Snapshot specific tab
+bash ./scripts/snapshot-json.sh abcd1234
+
+# With additional flags
+bash ./scripts/snapshot-json.sh --interactive --limit 200
+```
+
+Output format:
+
+```json
+{
+  "success": true,
+  "timestamp": "2026-03-30T19:00:00Z",
+  "data": {
+    "snapshot": "...",
+    "refs": ["@e1", "@e2", "@e3"]
+  },
+  "command": "snapshot --interactive --limit 200"
+}
+```
+
+### Wait patterns
+
+See `references/wait-patterns.md` for comprehensive wait patterns:
+
+| Pattern | Example |
+|---------|---------|
+| Wait for text | `openclaw browser wait --text "Welcome"` |
+| Wait for network | `openclaw browser wait --load networkidle` |
+| Wait for URL | `openclaw browser wait --url "**/dashboard"` |
+| Wait for JS condition | `openclaw browser wait --fn "window.ready === true"` |
+| Wait for time | `openclaw browser wait 3000` |
+
+**Rule**: Wait for conditions, not just time.
+
+### Comparison with agent-browser
+
+| Feature | agent-browser | Current OpenClaw |
+|---------|---------------|------------------|
+| Ref style | `@e2` | `@e2` or `12` |
+| Snapshot | `snapshot -i --json` | `snapshot --interactive --format ai` |
+| Wait for element | `wait @e2` | `wait --selector "[ref=e2]"` |
+| Wait for text | `wait --text "..."` | `wait --text "..."` |
+| Wait for network | `wait --load networkidle` | `wait --load networkidle` |
+| Wait for JS | `wait --fn "..."` | `wait --fn "..."` |
+| Session isolation | `--session` flag | Single Chrome, multi-tab |
+| State persistence | `state save/load` | Native Chrome persistence |
+
+**Design choice**: We prioritize reusing the user's daily Chrome (with native login state) over isolated browser instances. This is lighter and more aligned with the WSL2 → Windows Chrome remote CDP scenario.
+
+## Additional references
+
+- `references/wait-patterns.md` — Comprehensive wait patterns and best practices
