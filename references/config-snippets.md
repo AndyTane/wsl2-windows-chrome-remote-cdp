@@ -56,10 +56,12 @@ curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/list
 
 ## Recovery scripts
 
+Run these **from the skill root directory**:
+
 ```bash
-~/bin/update-openclaw-remote-cdp.sh --dry-run
-~/bin/update-openclaw-remote-cdp.sh --apply --set-default
-~/bin/show-openclaw-remote-cdp.sh
+./scripts/update-openclaw-remote-cdp.sh --dry-run
+./scripts/update-openclaw-remote-cdp.sh --apply --set-default
+./scripts/show-openclaw-remote-cdp.sh
 ```
 
 ## OpenClaw validation commands

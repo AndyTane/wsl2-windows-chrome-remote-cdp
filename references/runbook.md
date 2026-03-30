@@ -213,27 +213,33 @@ curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/list
 
 ### Step 6：重启后自动恢复 remote CDP（推荐）
 
-优先使用 skill 自带脚本，而不是每次手工改 JSON：
+**先进入 skill 根目录，再执行下面的脚本。**
+
+也就是说，下面这些命令都默认假设你的当前目录是：
+
+```text
+wsl2-windows-chrome-remote-cdp/
+```
+
+在这个前提下，优先使用 skill 自带脚本，而不是每次手工改 JSON：
 
 ```bash
-~/bin/update-openclaw-remote-cdp.sh --dry-run
-~/bin/update-openclaw-remote-cdp.sh --apply --set-default
+./scripts/update-openclaw-remote-cdp.sh --dry-run
+./scripts/update-openclaw-remote-cdp.sh --apply --set-default
 ```
 
 如果你只是想快速看当前宿主机 IP 与推导出来的 CDP URL：
 
 ```bash
-~/bin/show-openclaw-remote-cdp.sh
+./scripts/show-openclaw-remote-cdp.sh
 ```
 
-建议将 skill 中的脚本复制到：
+说明：
+- 文档默认使用“**在 skill 目录下执行**”这一约定
+- 这样不依赖具体用户名、家目录或安装路径
+- 无论 skill 被放在 `~/skills/...`、工作区目录、仓库目录，还是别的位置，只要进入 skill 根目录，命令都成立
 
-```bash
-mkdir -p ~/bin
-cp scripts/update-openclaw-remote-cdp.sh ~/bin/
-cp scripts/show-openclaw-remote-cdp.sh ~/bin/
-chmod +x ~/bin/update-openclaw-remote-cdp.sh ~/bin/show-openclaw-remote-cdp.sh
-```
+`~/bin` 复制方式只是一种可选的长期使用优化，不是默认步骤，也不是功能前提。
 
 ### Step 7：确认 OpenClaw 配置已指向 remote CDP
 

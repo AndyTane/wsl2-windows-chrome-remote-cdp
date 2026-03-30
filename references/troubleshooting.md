@@ -42,11 +42,11 @@ curl --connect-timeout 3 --max-time 5 http://172.17.32.1:9223/json/version
 
 ## If WSL `9223` works but OpenClaw remote fails
 
-First run the recovery script in dry-run mode, then apply mode if the derived host IP/CDP URL are correct.
+From the skill root directory, first run the recovery script in dry-run mode, then apply mode if the derived host IP/CDP URL are correct.
 
 ```bash
-~/bin/update-openclaw-remote-cdp.sh --dry-run
-~/bin/update-openclaw-remote-cdp.sh --apply --set-default
+./scripts/update-openclaw-remote-cdp.sh --dry-run
+./scripts/update-openclaw-remote-cdp.sh --apply --set-default
 ```
 
 Problem is in OpenClaw browser config or wrong profile usage.
