@@ -47,7 +47,8 @@ $results += [pscustomobject]@{ Check = 'portproxy bridge'; Status = $(if ($portp
 
 $firewallOut = cmd /c "netsh advfirewall firewall show rule name=\"ChromeCDP$BridgePort\"" 2>&1
 $firewallText = ($firewallOut | Out-String)
-$firewallOk = ($firewallText -match "Rule Name:") -and ($firewallText -match "ChromeCDP$BridgePort")
+$firewallMissing = ($firewallText -match 'No rules match') -or ($firewallText -match '没有与指定条件匹配的规则')
+$firewallOk = (-not $firewallMissing) -and ($firewallText -match [regex]::Escape("ChromeCDP$BridgePort"))
 $results += [pscustomobject]@{ Check = 'firewall rule'; Status = $(if ($firewallOk) { 'OK' } else { 'MISS' }); Detail = "ChromeCDP$BridgePort" }
 
 $ready = $chromePathOk -and $chromeJson.ok -and $chromeList.ok -and $portproxyOk -and $firewallOk
